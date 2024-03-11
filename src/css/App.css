@@ -1,0 +1,69 @@
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+} */
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #282c34;
+  /* Темный фон */
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+li {
+  margin: 0 20px;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+  /* Белый цвет текста */
+  font-size: 18px;
+  padding: 10px 15px;
+  border-radius: 10px;
+  transition: background-color 0.3s ease-in-out;
+  position: relative;
+  /* Позиционирование ссылки */
+}
+
+a:hover {
+  /* background-color: #525CEB; */
+  /* Цвет фона при наведении */
+  /* border-right: 2px solid #525CEB;
+  border-left: 2px solid #525CEB; */
+  border: 2px solid #525CEB;
+}
+
+h1 {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  text-align: center;
+  font-size: 5em;
+  font-weight: 300;
+}
