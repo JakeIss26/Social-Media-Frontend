@@ -1,36 +1,34 @@
+// Authorization.js
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { setLoginData, clearLoginData, authorize } from '../redux/AuthorizationSlice';
 import '../css/registration.css';
 
 function Authorization() {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const loading = useSelector(state => state.auth.loading);
+    const error = useSelector(state => state.auth.error);
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
 
-        const apiEndpointLogin = "http://127.0.0.1:8000/api/user/login";
-
-        let formData =
-        {
-            "login": login,
-            "password": password
+        const formData = {
+            login: login,
+            password: password
         };
 
-        try {
-            const response = await axios.post(apiEndpointLogin, formData);
-
-            const dataObject = response.data;
-            console.log(dataObject.access_token);
-            localStorage.setItem('Token', dataObject.access_token);
-
-            navigate("/main"); // Перенаправление на другую страницу
-
-        } catch (error) {
-            console.error("Error:", error);
-        }
+        dispatch(setLoginData(formData));
+        dispatch(authorize(formData))
+            .then((response) => {
+                navigate("/main");
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
     };
 
     return (
@@ -52,7 +50,8 @@ function Authorization() {
                         placeholder="Password"
                         required
                     />
-                    <button type="submit">Sign In</button>
+                    <button type="submit" disabled={loading}>Sign In</button>
+                    {error && <div className="error-message">{error}</div>}
                 </form>
             </div>
         </div>

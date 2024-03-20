@@ -1,45 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import Header from './Header'; // Путь к вашему компоненту Header
+// Profile.js
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Header from './Header';
 import '../css/profile.css';
 import { useNavigate } from 'react-router-dom';
+import { fetchUserData } from '../redux/ProfileSlice';
 
 function Profile() {
-  const [userData, setUserData] = useState(null);
+  const dispatch = useDispatch();
+  const userData = useSelector(state => state.profile.userData);
+  const loading = useSelector(state => state.profile.loading);
+  const error = useSelector(state => state.profile.error);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    dispatch(fetchUserData());
+  }, [dispatch]);
+
   const handleClick = () => {
-    // Перенаправляем пользователя на маршрут с вашим React компонентом
     navigate('/posts');
   };
 
   const redirectToRegistration = () => {
-    // Перенаправляем пользователя на страницу регистрации
     navigate('/registration');
   };
 
   const redirectToGroupLists = () => {
     navigate('/groupList');
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const apiEndpoint = "http://127.0.0.1:8000/api/data";
-      const token = localStorage.getItem('Token');
-      try {
-        const response = await axios.get(apiEndpoint, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        setUserData(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="profile-info">
